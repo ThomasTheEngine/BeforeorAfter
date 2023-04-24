@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<style>
+  .btn1 {
+    background-color: #4CAF50;
+    font-size: 24px;
+    transition-duration: 0.4s;
+  }
+  .btn1:hover {
+    background-color: #4CAF50;
+    font-size: 24px;
+    color: white;
+  }
+  .btn2 {
+    background-color: #cb0e0e;
+    font-size: 24px;
+    transition-duration: 0.4s;
+  }
+  .btn2:hover {
+    background-color: #cb0e0e;
+    font-size: 24px;
+    color: white;
+  }
+</style>
+<body>
+
+  <h1>Higher or Lower</h1>
+  <p id="counter"></p>
+  <p id="navn2"></p>
+  <p id="tekst2"></p>
+  <img id="myImage2" src="https://github.com/mpsteenstrup/GCP4/blob/master/FN_maal/samlet.jpg?raw=true" style="width: 40%;">
+  <br><br>
+
+
+<b>Kommer ovenstående opfindelse fra før eller efter nedenstående opfindelse?</b>
+<br>
+  <button type="button" class="btn1" onclick="higher()">Efter</button>
+  <button type="button" class="btn2" onclick="lower()">Før</button>
+
+
+  <p id="gammelnavn"></p>
+  <p id="gammeltekst"></p>
+  <img id="gammelmyImage" style ="width: 40%">
+
+
+</body>
+</html>
+
+<script>
+  let x = 1;
+  let data;
+  let navn = null;
+  let tekst = null;
+  let counter = 0;
+  let før;
+
+function higher() {
+  let pic;
+  if (før <= x){
+    counter += 1;
+  } else {
+    counter = 0;
+  }
+  før = x;
+  x = Math.floor(Math.random()*5+1);
+
+//har ikke indsat billeder endnu, dvs skaæ ændre pic = link
+
+  console.log(x);
+  genererTekst(x);
+  gemTekst(før);
+  document.getElementById('gammelnavn').innerHTML = gammelnavn;
+  document.getElementById('gammelmyImage').src = gammelpic;
+  document.getElementById('gammeltekst').innerHTML = gammeltekst;
+  pic = "https://github.com/mpsteenstrup/GCP4/blob/master/FN_maal/FN"+x+".jpg?raw=true"  
+  document.getElementById('navn2').innerHTML = navn;
+  document.getElementById('myImage2').src = pic;
+  document.getElementById('tekst2').innerHTML = tekst;
+  document.getElementById('counter').innerHTML = counter;
+
+}
+
+function lower() {
+  let pic;
+  if (før >= x){
+    counter += 1;
+  } else {
+    counter = 0;
+  }
+  før = x;
+  x = Math.floor(Math.random()*5+1);
+  console.log(x);
+  genererTekst(x);
+  gemTekst(før);
+  document.getElementById('gammelnavn').innerHTML = gammelnavn;
+  document.getElementById('gammelmyImage').src = gammelpic;
+  document.getElementById('gammeltekst').innerHTML = gammeltekst;
+  pic = "https://github.com/mpsteenstrup/GCP4/blob/master/FN_maal/FN"+x+".jpg?raw=true"  
+  document.getElementById('navn2').innerHTML = navn;
+  document.getElementById('myImage2').src = pic;
+  document.getElementById('tekst2').innerHTML = tekst;
+  document.getElementById('counter').innerHTML = counter;
+
+}
+
+
+
+function genererTekst(x){
+        navn = data[x-1]['navn']; 
+        tekst = data[x-1]['tekst'];
+        tjek = x;
+}
+
+function gemTekst(før){
+        gammelnavn = data[før-1]['navn']; 
+        gammeltekst = data[før-1]['tekst'];
+        gammelpic = "https://github.com/mpsteenstrup/GCP4/blob/master/FN_maal/FN"+før+".jpg?raw=true"  
+}
+
+window.onload = function() {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", "database-opfindelse.csv", true);
+  xhr.responseType = "text";
+  xhr.onload = function() {
+  data = Papa.parse(xhr.responseText, {
+    header: true // set this to true if the first row contains the header names
+    }).data;
+  };
+  xhr.send();
+}
+</script>
